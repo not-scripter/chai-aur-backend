@@ -24,4 +24,4 @@ const userSchema = new mongoose.Schema(
 
 export const User = mongoose.model("User", userSchema);
 
-//NOTE: MongoDB will automatically convert "User" to "users" it is their standard practice
+//NOTE: MongoDB will automatically convert "User" to "users" plural and lowercase if it is not already, it is their standard practice

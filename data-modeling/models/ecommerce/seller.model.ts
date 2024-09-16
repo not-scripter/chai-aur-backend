@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const sellerSchema = new mongoose.Schema(
   {
-    username: {
+    name: {
       type: String,
       required: [true, "uswrname is required"],
       unique: [true, "username should be unique"],
