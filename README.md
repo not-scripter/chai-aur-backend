@@ -6,12 +6,12 @@
 - .env
 
 - src
-  ** index
-  ** app
-  ** constants
-  ** DB
-  ** Models
-  ** Controllers
-  ** Routes
-  ** Middlewares
-  \*\* Utils
+  - index
+  - app
+  - constants
+  - DB
+  - Models
+  - Controllers
+  - Routes
+  - Middlewares
+  - Utils
