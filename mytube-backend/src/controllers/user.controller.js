@@ -41,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
   //chevk of user creation
   //return res
   //
+
   const { username, email, fullname, password } = req.body;
 
   if (
