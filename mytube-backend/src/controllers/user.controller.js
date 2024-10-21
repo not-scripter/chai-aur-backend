@@ -25,7 +25,7 @@ const generateAuthTokens = async (userID) => {
   } catch (error) {
     throw new ApiError(
       400,
-      "something went wrong, while generating auth tokens",
+      "something went wrong, while generating auth tokens"
     );
   }
 };
@@ -92,7 +92,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   const createdUser = await User.findById(user._id).select(
-    "-password -refreshToken",
+    "-password -refreshToken"
   );
 
   if (!createdUser) {
@@ -105,7 +105,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  // req body => ddata
+  // req body => data
   // username or email
   // find the user
   // password check
@@ -119,7 +119,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({
-    $or: [username, email],
+    $or: [{ username }, { email }],
   });
 
   if (!user) {
@@ -135,11 +135,11 @@ const loginUser = asyncHandler(async (req, res) => {
   const { accessToken, refreshToken } = await generateAuthTokens(user._id);
 
   const loggedInUser = await User.findById(user._id).select(
-    "-password -refreshToken",
+    "-password -refreshToken"
   );
 
   return res
-    .status(400)
+    .status(200)
     .cookie("accessToken", accessToken, secureCookieOptions)
     .cookie("refreshToken", refreshToken, secureCookieOptions)
     .json(
@@ -150,8 +150,8 @@ const loginUser = asyncHandler(async (req, res) => {
           accessToken,
           refreshToken,
         },
-        "user logged in successfully",
-      ),
+        "user logged in successfully"
+      )
     );
 });
 
@@ -163,7 +163,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         refreshToken: undefined,
       },
     },
-    { new: true },
+    { new: true }
   );
 
   return res
@@ -184,7 +184,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const decodedToken = jwt.verify(
       incomingRefredhToken,
-      process.env.REFRESH_TOKEN_SECRET,
+      process.env.REFRESH_TOKEN_SECRET
     );
 
     const user = await User.findById(decodedToken?._id);
@@ -207,8 +207,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         new ApiResponse(
           200,
           { accessToken, refreshToken },
-          "access token refreshed",
-        ),
+          "access token refreshed"
+        )
       );
   } catch (error) {
     throw new ApiError(401, error?.message || "error refreshing access token");
@@ -219,11 +219,13 @@ const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, { user: res.user }, "user fetched successfully"),
+      new ApiResponse(200, { user: res.user }, "user fetched successfully")
     );
 });
 
 const forgotPassword = asyncHandler(async (req, res) => {
+  console.log(req.body);
+
   const { oldPassword, newPassword } = req.body;
 
   const user = await User.findById(req.ussr._id);
@@ -258,7 +260,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
         email,
       },
     },
-    { new: true },
+    { new: true }
   );
 
   return res
@@ -282,7 +284,7 @@ const updateUserAvatar = asyncHandler(async (req, rea) => {
         avatar: uploadedFile.url,
       },
     },
-    { new: true },
+    { new: true }
   );
 
   return res
@@ -306,13 +308,13 @@ const updateUserCoverImage = asyncHandler(async (req, rea) => {
         coverImage: uploadedFile.url,
       },
     },
-    { new: true },
+    { new: true }
   );
 
   return res
     .status(200)
     .json(
-      new ApiResponse(200, { user }, "updated user cover image successfully"),
+      new ApiResponse(200, { user }, "updated user cover image successfully")
     );
 });
 
@@ -433,7 +435,7 @@ const getWatchHistory = asyncHandler(async (req, res) => {
     .status(200)
     .json(
       new ApiResponse(200, user[0].watchHistory),
-      "watch history fetched succesfully",
+      "watch history fetched succesfully"
     );
 });
 

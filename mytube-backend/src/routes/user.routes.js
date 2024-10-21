@@ -25,14 +25,15 @@ router.route("/register").post(
       maxCount: 1,
     },
   ]),
-  registerUser,
+  registerUser
 );
+
 router.route("/login").post(loginUser);
 
 // Secured Routes
 router.route("/logout").post(verifyJwt, logoutUser);
 router.route("/refreshToken").post(refreshAccessToken);
-router.route("/forgot-passworf").post(verifyJwt, forgotPassword);
+router.route("/forgotPassword").post(verifyJwt, forgotPassword);
 router.route("/current-user").get(verifyJwt, getCurrentUser);
 router.route("/update-details").patch(verifyJwt, updateUserDetails);
 router
