@@ -34,15 +34,15 @@ router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJwt, logoutUser);
 router.route("/refreshToken").post(refreshAccessToken);
 router.route("/forgotPassword").post(verifyJwt, forgotPassword);
-router.route("/current-user").get(verifyJwt, getCurrentUser);
-router.route("/update-details").patch(verifyJwt, updateUserDetails);
+router.route("/getCurrentUser").get(verifyJwt, getCurrentUser);
+router.route("/updateUserDetails").patch(verifyJwt, updateUserDetails);
 router
-  .route("/update-avatar")
+  .route("/updateUserAvatar")
   .patch(verifyJwt, upload.single("avatar"), updateUserAvatar);
 router
-  .route("/update-coverImage")
+  .route("/updateUserCoverImage")
   .patch(verifyJwt, upload.single("coverImage"), updateUserCoverImage);
 router.route("/c/:username").get(verifyJwt, getUserChannelDetails);
-router.route("/watch-history").get(verifyJwt, getWatchHistory);
+router.route("/watchHistory").get(verifyJwt, getWatchHistory);
 
 export default router;

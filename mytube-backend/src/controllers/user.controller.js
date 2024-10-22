@@ -112,6 +112,7 @@ const loginUser = asyncHandler(async (req, res) => {
   // access and refresh token
   // send cookie
 
+  console.log(req.body);
   const { email, username, password } = req.body;
 
   if (!(username || email)) {
@@ -219,16 +220,14 @@ const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      new ApiResponse(200, { user: res.user }, "user fetched successfully")
+      new ApiResponse(200, { user: req.user }, "user fetched successfully")
     );
 });
 
 const forgotPassword = asyncHandler(async (req, res) => {
-  console.log(req.body);
-
   const { oldPassword, newPassword } = req.body;
 
-  const user = await User.findById(req.ussr._id);
+  const user = await User.findById(req.user._id);
 
   const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
 
@@ -245,6 +244,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 const updateUserDetails = asyncHandler(async (req, res) => {
+  console.log(req.body);
   const { username, fullname, email } = req.body;
 
   if (!(username || fullname || email)) {
@@ -252,7 +252,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findByIdAndUpdate(
-    res.user._id,
+    req.user._id,
     {
       $set: {
         username,
@@ -268,17 +268,18 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, { user }, "user details updated successfully"));
 });
 
-const updateUserAvatar = asyncHandler(async (req, rea) => {
-  const localAvatarPath = req.files[0]?.path;
+const updateUserAvatar = asyncHandler(async (req, res) => {
+  const localAvatarPath = req.file?.path;
 
   const uploadedFile = await uploadOnCloudinary(localAvatarPath);
 
   if (!uploadedFile.url) {
     throw new ApiError(401, "error uploading avatar");
+    console.log(req.files.newAvatar[0]?.path, "new avatar");
   }
 
   const user = await User.findByIdAndUpdate(
-    res.user._id,
+    req.user._id,
     {
       $set: {
         avatar: uploadedFile.url,
@@ -292,8 +293,8 @@ const updateUserAvatar = asyncHandler(async (req, rea) => {
     .json(new ApiResponse(200, { user }, "updated user avatar successfully"));
 });
 
-const updateUserCoverImage = asyncHandler(async (req, rea) => {
-  const localCoverImagePath = req.files[0]?.path;
+const updateUserCoverImage = asyncHandler(async (req, res) => {
+  const localCoverImagePath = req.file?.path;
 
   const uploadedFile = await uploadOnCloudinary(localCoverImagePath);
 
@@ -302,7 +303,7 @@ const updateUserCoverImage = asyncHandler(async (req, rea) => {
   }
 
   const user = await User.findByIdAndUpdate(
-    res.user._id,
+    req.user._id,
     {
       $set: {
         coverImage: uploadedFile.url,
